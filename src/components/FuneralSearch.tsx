@@ -21,7 +21,7 @@ const funeralData: FuneralData[] = [
   },
   {
     id: '2',
-    name: 'Hayko Bağdat',
+    name: 'Manukyan',
     date: '2024-11-02',
     church: 'Surp Takavor Kilisesi',
     time: '11:00'
@@ -32,6 +32,20 @@ const funeralData: FuneralData[] = [
     date: '2024-11-03',
     church: 'Surp Asdvadzadzin Kilisesi',
     time: '13:00'
+  },
+  {
+    id: '4',
+    name: 'Sayat Tekin',
+    date: '2024-11-04',
+    church: 'Surp Haç Tıbrevank Kilisesi',
+    time: '13:00'
+  },
+  {
+    id: '5',
+    name: 'Arthur Balyan',
+    date: '2024-11-04',
+    church: 'Ortaköy Kilisesi',
+    time: '17:00'
   }
 ];
 
