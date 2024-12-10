@@ -50,15 +50,10 @@ function App() {
         language={language} 
         onDonate={handleDonate}
       />
-      <EventsSection language={language} />
       <NewsSection language={language} />
+      <EventsSection language={language} />
       <ContactSection language={language} />
       <Footer language={language} />
-      <AuthModal
-        isOpen={authModal.isOpen}
-        onClose={() => setAuthModal({ isOpen: false })}
-        language={language}
-      />
     </>
   );
 
@@ -91,6 +86,11 @@ function App() {
         />
         {renderPage()}
         {currentPage !== 'home' && <Footer language={language} />}
+        <AuthModal
+          isOpen={authModal.isOpen}
+          onClose={() => setAuthModal({ isOpen: false })}
+          language={language}
+        />
       </div>
     </AuthProvider>
   );

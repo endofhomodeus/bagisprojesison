@@ -31,7 +31,6 @@ export default function Navbar({
   const [isOpen, setIsOpen] = useState(false);
   const [showLanguages, setShowLanguages] = useState(false);
   const { isAuthenticated } = useAuth();
-
   const t = translations[language];
 
   const languages = {
@@ -56,6 +55,13 @@ export default function Navbar({
     setShowLanguages(false);
   };
 
+  const handleAuthClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onAuth();
+    setIsOpen(false);
+  };
+
   return (
     <nav className="fixed top-0 w-full bg-white dark:bg-gray-900 shadow-lg z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -72,11 +78,12 @@ export default function Navbar({
             </button>
           </div>
 
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
             <button onClick={() => scrollToSection('about')} className="nav-link">{t.navbar.about}</button>
             <button onClick={() => scrollToSection('funeral-search')} className="nav-link">{t.navbar.funerals}</button>
-            <button onClick={() => scrollToSection('events')} className="nav-link">{t.navbar.events}</button>
             <button onClick={() => scrollToSection('news')} className="nav-link">{t.navbar.news}</button>
+            <button onClick={() => scrollToSection('events')} className="nav-link">{t.navbar.events}</button>
             <button onClick={() => scrollToSection('contact')} className="nav-link">{t.navbar.contact}</button>
 
             <button
@@ -128,10 +135,7 @@ export default function Navbar({
               />
             ) : (
               <button 
-                onClick={() => {
-                  onAuth();
-                  setIsOpen(false);
-                }} 
+                onClick={handleAuthClick}
                 className="nav-link"
               >
                 {t.navbar.login}
@@ -139,67 +143,98 @@ export default function Navbar({
             )}
           </div>
 
+          {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
-            <button onClick={() => setIsOpen(!isOpen)}>
+            <button onClick={() => setIsOpen(!isOpen)} className="p-2">
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
       </div>
 
+      {/* Mobile menu */}
       {isOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <button onClick={() => scrollToSection('about')} className="block nav-link w-full text-left">{t.navbar.about}</button>
-            <button onClick={() => scrollToSection('funeral-search')} className="block nav-link w-full text-left">{t.navbar.funerals}</button>
-            <button onClick={() => scrollToSection('events')} className="block nav-link w-full text-left">{t.navbar.events}</button>
-            <button onClick={() => scrollToSection('news')} className="block nav-link w-full text-left">{t.navbar.news}</button>
-            <button onClick={() => scrollToSection('contact')} className="block nav-link w-full text-left">{t.navbar.contact}</button>
-            <button 
-              onClick={() => {
-                onDonate();
-                setIsOpen(false);
-              }} 
-              className="block nav-link w-full text-left"
-            >
-              {t.navbar.donate}
+        <div className="md:hidden bg-white dark:bg-gray-900 shadow-lg">
+          <div className="px-4 pt-2 pb-3 space-y-2">
+            <button onClick={() => scrollToSection('about')} 
+              className="block w-full text-left py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-red-600 dark:hover:text-red-400">
+              {t.navbar.about}
             </button>
-            
-            {isAuthenticated ? (
-              <>
-                <button
-                  onClick={() => {
-                    onProfile();
-                    setIsOpen(false);
-                  }}
-                  className="block nav-link w-full text-left"
-                >
-                  {t.profile.title}
-                </button>
-                <button
-                  onClick={() => {
-                    onHistory();
-                    setIsOpen(false);
-                  }}
-                  className="block nav-link w-full text-left"
-                >
-                  {t.donations.history}
-                </button>
-              </>
-            ) : (
-              <button 
-                onClick={() => {
-                  onAuth();
-                  setIsOpen(false);
-                }} 
-                className="block nav-link w-full text-left"
-              >
-                {t.navbar.login}
-              </button>
-            )}
+            <button onClick={() => scrollToSection('funeral-search')} 
+              className="block w-full text-left py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-red-600 dark:hover:text-red-400">
+              {t.navbar.funerals}
+            </button>
+            <button onClick={() => scrollToSection('news')} 
+              className="block w-full text-left py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-red-600 dark:hover:text-red-400">
+              {t.navbar.news}
+            </button>
+            <button onClick={() => scrollToSection('events')} 
+              className="block w-full text-left py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-red-600 dark:hover:text-red-400">
+              {t.navbar.events}
+            </button>
+            <button onClick={() => scrollToSection('contact')} 
+              className="block w-full text-left py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-red-600 dark:hover:text-red-400">
+              {t.navbar.contact}
+            </button>
 
-            <div className="py-2">
-              <div className="text-sm font-medium text-gray-500 dark:text-gray-400 px-3 mb-2">
+            {/* Centered Donate Button */}
+            <div className="py-2 flex justify-center">
+              <button
+                onClick={() => {
+                  onDonate();
+                  setIsOpen(false);
+                }}
+                className="w-full max-w-xs px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md flex items-center justify-center"
+              >
+                <Heart className="w-4 h-4 mr-2" />
+                {t.navbar.donate}
+              </button>
+            </div>
+
+            <div className="py-2 border-t border-gray-200 dark:border-gray-700">
+              {isAuthenticated ? (
+                <>
+                  <button
+                    onClick={() => {
+                      onProfile();
+                      setIsOpen(false);
+                    }}
+                    className="block w-full text-left py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-red-600 dark:hover:text-red-400"
+                  >
+                    {t.profile.title}
+                  </button>
+                  <button
+                    onClick={() => {
+                      onHistory();
+                      setIsOpen(false);
+                    }}
+                    className="block w-full text-left py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-red-600 dark:hover:text-red-400"
+                  >
+                    {t.donations.history}
+                  </button>
+                </>
+              ) : (
+                <button 
+                  onClick={handleAuthClick}
+                  className="block w-full text-left py-2 text-base font-bold text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500"
+                >
+                  {t.navbar.login}
+                </button>
+              )}
+            </div>
+
+            <div className="py-2 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex items-center justify-between">
+                <button onClick={() => onThemeChange(theme === 'dark' ? 'light' : 'dark')}
+                  className="flex items-center py-2 text-base font-medium text-gray-700 dark:text-gray-200">
+                  {theme === 'dark' ? <Sun className="w-5 h-5 mr-2" /> : <Moon className="w-5 h-5 mr-2" />}
+                  {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+                </button>
+              </div>
+            </div>
+
+            <div className="py-2 border-t border-gray-200 dark:border-gray-700">
+              <div className="text-base font-medium text-gray-700 dark:text-gray-200 mb-2">
                 {t.navbar.selectLanguage}
               </div>
               {Object.entries(languages).map(([code, name]) => (
@@ -209,7 +244,7 @@ export default function Navbar({
                     handleLanguageChange(code as Language);
                     setIsOpen(false);
                   }}
-                  className="block nav-link w-full text-left"
+                  className="block w-full text-left py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:text-red-600 dark:hover:text-red-400"
                 >
                   {name}
                 </button>

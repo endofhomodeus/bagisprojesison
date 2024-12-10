@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { CreditCard, DollarSign, Euro, PoundSterling, Banknote, User, Building2, Heart } from 'lucide-react';
-import type { Foundation, Language } from '../types';
+import { Heart } from 'lucide-react';
+import type { Language } from '../types';
 import { translations } from '../translations';
+import DonationSlider from '../components/DonationSlider';
+import { currencies, foundations, type DonorInfo, type CardInfo } from '../constants/donation';
 
 interface DonationPageProps {
   language: Language;
@@ -31,7 +33,12 @@ export default function DonationPage({ language, initialNote = '' }: DonationPag
     cvc: '',
   });
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAmountChange = (value: number) => {
+    setAmount(value);
+    setCustomAmount('');
+  };
+
+  const handleCustomAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.max(0, Number(e.target.value));
     setCustomAmount(value.toString());
     setAmount(value);
@@ -39,6 +46,10 @@ export default function DonationPage({ language, initialNote = '' }: DonationPag
 
   const handleDonorInfoChange = (field: keyof DonorInfo, value: string) => {
     setDonorInfo(prev => ({ ...prev, [field]: value }));
+  };
+
+  const formatNumber = (num: number) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   const isFormValid = () => {
@@ -189,164 +200,12 @@ export default function DonationPage({ language, initialNote = '' }: DonationPag
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-12">
+        <h1 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">
           Bağış Yap
         </h1>
 
         <div className="grid md:grid-cols-3 gap-8">
           <div className="md:col-span-2 space-y-8">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold mb-4 dark:text-white">Bağışçı Tipi</h3>
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <button
-                  onClick={() => {
-                    setDonorType('individual');
-                    setDonorInfo({ type: 'individual', email: '', phone: '', address: '' });
-                  }}
-                  className={`flex items-center justify-center space-x-2 p-4 rounded-lg border ${
-                    donorType === 'individual'
-                      ? 'border-red-500 bg-red-50 dark:bg-red-900 text-red-600 dark:text-red-300'
-                      : 'border-gray-300 dark:border-gray-600'
-                  }`}
-                >
-                  <User className="w-5 h-5" />
-                  <span>Bireysel</span>
-                </button>
-                <button
-                  onClick={() => {
-                    setDonorType('corporate');
-                    setDonorInfo({ type: 'corporate', email: '', phone: '', address: '' });
-                  }}
-                  className={`flex items-center justify-center space-x-2 p-4 rounded-lg border ${
-                    donorType === 'corporate'
-                      ? 'border-red-500 bg-red-50 dark:bg-red-900 text-red-600 dark:text-red-300'
-                      : 'border-gray-300 dark:border-gray-600'
-                  }`}
-                >
-                  <Building2 className="w-5 h-5" />
-                  <span>Kurumsal</span>
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                {donorType === 'individual' ? (
-                  <>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          Ad
-                        </label>
-                        <input
-                          type="text"
-                          value={donorInfo.firstName || ''}
-                          onChange={(e) => handleDonorInfoChange('firstName', e.target.value)}
-                          className="input-field"
-                          placeholder="Adınız"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          Soyad
-                        </label>
-                        <input
-                          type="text"
-                          value={donorInfo.lastName || ''}
-                          onChange={(e) => handleDonorInfoChange('lastName', e.target.value)}
-                          className="input-field"
-                          placeholder="Soyadınız"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        TC Kimlik No
-                      </label>
-                      <input
-                        type="text"
-                        value={donorInfo.identityNumber || ''}
-                        onChange={(e) => handleDonorInfoChange('identityNumber', e.target.value)}
-                        className="input-field"
-                        placeholder="TC Kimlik Numaranız"
-                        maxLength={11}
-                        required
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Şirket Adı
-                      </label>
-                      <input
-                        type="text"
-                        value={donorInfo.companyName || ''}
-                        onChange={(e) => handleDonorInfoChange('companyName', e.target.value)}
-                        className="input-field"
-                        placeholder="Şirket Adı"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Vergi No
-                      </label>
-                      <input
-                        type="text"
-                        value={donorInfo.taxNumber || ''}
-                        onChange={(e) => handleDonorInfoChange('taxNumber', e.target.value)}
-                        className="input-field"
-                        placeholder="Vergi Numarası"
-                        required
-                      />
-                    </div>
-                  </>
-                )}
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    E-posta
-                  </label>
-                  <input
-                    type="email"
-                    value={donorInfo.email}
-                    onChange={(e) => handleDonorInfoChange('email', e.target.value)}
-                    className="input-field"
-                    placeholder="E-posta Adresiniz"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Telefon
-                  </label>
-                  <input
-                    type="tel"
-                    value={donorInfo.phone}
-                    onChange={(e) => handleDonorInfoChange('phone', e.target.value)}
-                    className="input-field"
-                    placeholder="Telefon Numaranız"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Adres
-                  </label>
-                  <textarea
-                    value={donorInfo.address}
-                    onChange={(e) => handleDonorInfoChange('address', e.target.value)}
-                    className="input-field"
-                    placeholder="Adresiniz"
-                    rows={3}
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
               <h3 className="text-xl font-semibold mb-4 dark:text-white">Para Birimi</h3>
               <div className="grid grid-cols-4 gap-4 mb-6">
@@ -367,23 +226,12 @@ export default function DonationPage({ language, initialNote = '' }: DonationPag
               </div>
 
               <h3 className="text-xl font-semibold mb-4 dark:text-white">Bağış Miktarı</h3>
-              <div className="grid grid-cols-5 gap-4 mb-6">
-                {predefinedAmounts.map((preset) => (
-                  <button
-                    key={preset}
-                    onClick={() => {
-                      setAmount(preset);
-                      setCustomAmount('');
-                    }}
-                    className={`p-3 rounded-md border ${
-                      amount === preset && !customAmount
-                        ? 'border-red-500 bg-red-50 dark:bg-red-900 text-red-600 dark:text-red-300'
-                        : 'border-gray-300 dark:border-gray-600'
-                    }`}
-                  >
-                    {preset}
-                  </button>
-                ))}
+              <div className="mb-8">
+                <DonationSlider
+                  value={amount}
+                  onChange={handleAmountChange}
+                  currency={currency}
+                />
               </div>
 
               <div className="mb-6">
@@ -394,7 +242,7 @@ export default function DonationPage({ language, initialNote = '' }: DonationPag
                   type="number"
                   min="0"
                   value={customAmount}
-                  onChange={handleAmountChange}
+                  onChange={handleCustomAmountChange}
                   className="input-field"
                   placeholder="Miktar girin"
                 />
@@ -444,7 +292,7 @@ export default function DonationPage({ language, initialNote = '' }: DonationPag
                 <div className="pb-4 border-b border-gray-200 dark:border-gray-700">
                   <p className="text-gray-600 dark:text-gray-300">Seçilen Miktar</p>
                   <p className="text-2xl font-bold dark:text-white">
-                    {amount} {currency}
+                    {formatNumber(amount)} {currency}
                   </p>
                 </div>
                 {note && (
@@ -493,49 +341,3 @@ export default function DonationPage({ language, initialNote = '' }: DonationPag
     </div>
   );
 }
-
-interface DonorInfo {
-  type: 'individual' | 'corporate';
-  firstName?: string;
-  lastName?: string;
-  identityNumber?: string;
-  companyName?: string;
-  taxNumber?: string;
-  email: string;
-  phone: string;
-  address: string;
-}
-
-interface CardInfo {
-  number: string;
-  name: string;
-  expiry: string;
-  cvc: string;
-}
-
-const currencies = [
-  { symbol: 'TRY', icon: Banknote, label: 'TL' },
-  { symbol: 'USD', icon: DollarSign, label: 'USD' },
-  { symbol: 'EUR', icon: Euro, label: 'EUR' },
-  { symbol: 'GBP', icon: PoundSterling, label: 'GBP' },
-];
-
-const predefinedAmounts = [500, 1000, 2500, 5000, 10000];
-
-const foundations: Foundation[] = [
-  {
-    id: '1',
-    name: 'Surp Pırgiç Ermeni Hastanesi Vakfı',
-    description: 'Sağlık hizmetleri ve sosyal yardım',
-  },
-  {
-    id: '2',
-    name: 'Karagözyan Ermeni Yetimhanesi Vakfı',
-    description: 'Çocuk bakımı ve eğitim',
-  },
-  {
-    id: '3',
-    name: 'Surp Agop Ermeni Katolik Hastanesi Vakfı',
-    description: 'Sağlık hizmetleri',
-  },
-];
