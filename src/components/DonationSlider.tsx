@@ -20,6 +20,27 @@ export default function DonationSlider({
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let newValue = Number(e.target.value);
+    
+    // Custom step logic
+    if (newValue <= 5000) {
+      newValue = Math.round(newValue / 100) * 100; // Round to nearest 100
+    } else if (newValue <= 10000) {
+      newValue = Math.round(newValue / 500) * 500; // Round to nearest 500
+    } else {
+      newValue = Math.round(newValue / 1000) * 1000; // Round to nearest 1000
+    }
+    
+    onChange(newValue);
+  };
+
+  const getStep = (value: number) => {
+    if (value <= 5000) return 100;
+    if (value <= 10000) return 500;
+    return 1000;
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-center">
@@ -35,7 +56,8 @@ export default function DonationSlider({
           min={min}
           max={max}
           value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
+          step={getStep(value)}
+          onChange={handleSliderChange}
           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700
             [&::-webkit-slider-thumb]:appearance-none
             [&::-webkit-slider-thumb]:w-6
@@ -62,7 +84,8 @@ export default function DonationSlider({
         />
         <div className="absolute -top-2 left-0 right-0 flex justify-between text-xs text-gray-500 dark:text-gray-400">
           <span>{formatNumber(min)}</span>
-          <span>{formatNumber(max/2)}</span>
+          <span>{formatNumber(30000)}</span>
+          <span>{formatNumber(65000)}</span>
           <span>{formatNumber(max)}</span>
         </div>
       </div>

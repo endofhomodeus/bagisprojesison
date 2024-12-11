@@ -33,6 +33,10 @@ function App() {
     }
   }, [theme]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
+
   const handleDonate = (name?: string) => {
     setCurrentPage('donation');
     if (name) {

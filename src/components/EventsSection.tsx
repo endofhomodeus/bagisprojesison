@@ -1,24 +1,40 @@
 import React from 'react';
-import { Calendar, MapPin, Clock } from 'lucide-react';
+import { Calendar, MapPin } from 'lucide-react';
 import type { Event } from '../types';
 
 const upcomingEvents: Event[] = [
   {
     id: '1',
-    title: 'Kültür ve Sanat Festivali',
+    title: 'Ermeni Mutfağı Festivali',
     date: '2024-04-15',
-    location: 'İstanbul Kültür Merkezi',
-    description: 'Geleneksel el sanatları, müzik ve dans gösterileri',
-    image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80',
+    location: 'Beyoğlu Üç Horan Kilisesi Avlusu',
+    description: 'Geleneksel Ermeni mutfağının en özel lezzetlerinin sunulacağı festivalde, yöresel yemekler ve tatlılar tadılabilecek, yemek yapım gösterileri izlenebilecek.',
+    image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&q=80',
   },
   {
     id: '2',
-    title: 'Topluluk Buluşması',
-    date: '2024-04-20',
-    location: 'Vakıf Merkezi',
-    description: 'Aylık topluluk buluşması ve sosyal etkinlik',
-    image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80',
+    title: 'Çocuklar İçin Ermenice Yaz Kampı',
+    date: '2024-06-20',
+    location: 'Kınalıada Ermeni Yetimhanesi',
+    description: 'Çocuklara Ermenice öğretmek ve kültürel değerleri aktarmak amacıyla düzenlenen yaz kampı başlıyor. Eğlenceli aktiviteler ve eğitim bir arada.',
+    image: 'https://images.unsplash.com/photo-1472898965229-f9b06b9c9bbe?auto=format&fit=crop&q=80',
   },
+  {
+    id: '3',
+    title: 'Klasik Ermeni Müziği Konseri',
+    date: '2024-05-10',
+    location: 'Surp Levon Ermeni Katolik Kilisesi',
+    description: 'Ünlü Ermeni bestecilerin eserlerinden oluşan özel bir repertuar, profesyonel müzisyenler tarafından seslendirilecek.',
+    image: 'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?auto=format&fit=crop&q=80',
+  },
+  {
+    id: '4',
+    title: 'Ermeni El Sanatları Sergisi',
+    date: '2024-04-25',
+    location: 'Getronagan Lisesi Sergi Salonu',
+    description: 'Geleneksel Ermeni el sanatlarının modern yorumlarını içeren sergi, usta zanaatkarların eserlerini sanatseverlerle buluşturuyor.',
+    image: 'https://images.unsplash.com/photo-1459908676235-d5f02a50184b?auto=format&fit=crop&q=80',
+  }
 ];
 
 export default function EventsSection() {

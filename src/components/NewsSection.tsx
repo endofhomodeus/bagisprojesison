@@ -5,18 +5,32 @@ import type { News } from '../types';
 const latestNews: News[] = [
   {
     id: '1',
-    title: 'Yeni Kültür Merkezi Açılışı',
-    content: 'Topluluğumuz için yeni bir kültür merkezi açılıyor...',
+    title: 'Surp Pırgiç Hastanesi\'nde Yeni Sağlık Hizmetleri',
+    content: 'Surp Pırgiç Ermeni Hastanesi, modern tıbbi cihazlarla donatılmış yeni bölümlerini hizmete açtı. Hastane yönetimi, topluma daha iyi hizmet verebilmek için teknolojik altyapısını güçlendirmeye devam ediyor.',
     date: '2024-03-15',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80',
+    image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80',
   },
   {
     id: '2',
-    title: 'Geleneksel Festival Başlıyor',
-    content: 'Bu yılki geleneksel festivalimiz yaklaşıyor...',
+    title: 'Surp Haç Tıbrevank Lisesi\'nden Uluslararası Başarı',
+    content: 'Özel Tıbrevank Ermeni Lisesi öğrencileri, uluslararası bilim olimpiyatlarında önemli başarılar elde etti. Matematik ve fizik dallarında altın madalya kazanan öğrenciler, okullarını gururlandırdı.',
     date: '2024-03-10',
-    image: 'https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&q=80',
+    image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80',
   },
+  {
+    id: '3',
+    title: 'Karagözyan Vakfı\'ndan Eğitim Bursu Programı',
+    content: 'Karagözyan Vakfı, yeni eğitim-öğretim yılı için kapsamlı bir burs programı başlattı. Program, başarılı öğrencilere eğitim hayatları boyunca destek sağlamayı hedefliyor.',
+    date: '2024-03-08',
+    image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80',
+  },
+  {
+    id: '4',
+    title: 'Ermeni Kültür Mirası Dijital Arşiv Projesi',
+    content: 'İstanbul\'daki Ermeni kültür mirasının dijital ortama aktarılması projesi başladı. Proje kapsamında tarihi belgeler, fotoğraflar ve el yazmaları dijitalleştirilerek gelecek nesillere aktarılacak.',
+    date: '2024-03-05',
+    image: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&q=80',
+  }
 ];
 
 export default function NewsSection() {
