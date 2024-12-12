@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart } from 'lucide-react';
+import { Heart, User, Building2 } from 'lucide-react';
 import type { Language } from '../types';
 import { translations } from '../translations';
 import DonationSlider from '../components/DonationSlider';
@@ -206,6 +206,160 @@ export default function DonationPage({ language, initialNote = '' }: DonationPag
 
         <div className="grid md:grid-cols-3 gap-8">
           <div className="md:col-span-2 space-y-8">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold mb-4 dark:text-white">Bağışçı Tipi</h3>
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <button
+                  onClick={() => {
+                    setDonorType('individual');
+                    setDonorInfo({ type: 'individual', email: '', phone: '', address: '' });
+                  }}
+                  className={`flex items-center justify-center space-x-2 p-4 rounded-lg border ${
+                    donorType === 'individual'
+                      ? 'border-red-500 bg-red-50 dark:bg-red-900 text-red-600 dark:text-red-300'
+                      : 'border-gray-300 dark:border-gray-600'
+                  }`}
+                >
+                  <User className="w-5 h-5" />
+                  <span>Bireysel</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setDonorType('corporate');
+                    setDonorInfo({ type: 'corporate', email: '', phone: '', address: '' });
+                  }}
+                  className={`flex items-center justify-center space-x-2 p-4 rounded-lg border ${
+                    donorType === 'corporate'
+                      ? 'border-red-500 bg-red-50 dark:bg-red-900 text-red-600 dark:text-red-300'
+                      : 'border-gray-300 dark:border-gray-600'
+                  }`}
+                >
+                  <Building2 className="w-5 h-5" />
+                  <span>Kurumsal</span>
+                </button>
+              </div>
+
+              {/* Donor Information Form */}
+              <div className="space-y-4">
+                {donorType === 'individual' ? (
+                  <>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          Ad
+                        </label>
+                        <input
+                          type="text"
+                          value={donorInfo.firstName || ''}
+                          onChange={(e) => handleDonorInfoChange('firstName', e.target.value)}
+                          className="input-field"
+                          placeholder="Adınız"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          Soyad
+                        </label>
+                        <input
+                          type="text"
+                          value={donorInfo.lastName || ''}
+                          onChange={(e) => handleDonorInfoChange('lastName', e.target.value)}
+                          className="input-field"
+                          placeholder="Soyadınız"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        TC Kimlik No
+                      </label>
+                      <input
+                        type="text"
+                        value={donorInfo.identityNumber || ''}
+                        onChange={(e) => handleDonorInfoChange('identityNumber', e.target.value)}
+                        className="input-field"
+                        placeholder="TC Kimlik Numaranız"
+                        maxLength={11}
+                        required
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Şirket Adı
+                      </label>
+                      <input
+                        type="text"
+                        value={donorInfo.companyName || ''}
+                        onChange={(e) => handleDonorInfoChange('companyName', e.target.value)}
+                        className="input-field"
+                        placeholder="Şirket Adı"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Vergi No
+                      </label>
+                      <input
+                        type="text"
+                        value={donorInfo.taxNumber || ''}
+                        onChange={(e) => handleDonorInfoChange('taxNumber', e.target.value)}
+                        className="input-field"
+                        placeholder="Vergi Numarası"
+                        required
+                      />
+                    </div>
+                  </>
+                )}
+
+                {/* Common Fields */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    E-posta
+                  </label>
+                  <input
+                    type="email"
+                    value={donorInfo.email}
+                    onChange={(e) => handleDonorInfoChange('email', e.target.value)}
+                    className="input-field"
+                    placeholder="E-posta Adresiniz"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Telefon
+                  </label>
+                  <input
+                    type="tel"
+                    value={donorInfo.phone}
+                    onChange={(e) => handleDonorInfoChange('phone', e.target.value)}
+                    className="input-field"
+                    placeholder="Telefon Numaranız"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Adres
+                  </label>
+                  <textarea
+                    value={donorInfo.address}
+                    onChange={(e) => handleDonorInfoChange('address', e.target.value)}
+                    className="input-field"
+                    placeholder="Adresiniz"
+                    rows={3}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
               <h3 className="text-xl font-semibold mb-4 dark:text-white">Para Birimi</h3>
               <div className="grid grid-cols-4 gap-4 mb-6">
